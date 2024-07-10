@@ -34,7 +34,7 @@ class OrderShipped extends Mailable
             ->view('emails.orders.shipped')
             ->with([
                 'orderId' => $this->order->id,
-                'orderAmount' => $this->order->quantity * $this->order->product->price,
+                'orderAmount' => bcdiv($this->order->quantity * $this->order->product->price, 1, 2),
                 'productName' => $this->order->product->name,
             ]);
     }

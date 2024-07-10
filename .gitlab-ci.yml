@@ -1,0 +1,23 @@
+image: php:8.2
+
+stages:
+  - test
+
+cache:
+  paths:
+    - vendor/
+
+before_script:
+  - apt-get update -yqq
+  - apt-get install -yqq apt-utils zip unzip
+  - docker-php-ext-install pdo_mysql bcmath redis
+  - curl -sS https://getcomposer.org/installer | php
+  - php composer.phar install
+
+unit_tests:
+  stage: test
+  script:
+    - ./vendor/bin/phpunit --coverage-text --colors=never
+  only:
+    - merge_requests
+    - main
